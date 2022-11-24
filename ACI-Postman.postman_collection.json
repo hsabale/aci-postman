@@ -1,0 +1,953 @@
+{
+	"info": {
+		"_postman_id": "8b4547fb-ab10-4356-9bf1-d273410dd2c8",
+		"name": "ACI-Postman",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Login into APIC First",
+			"item": [
+				{
+					"name": "Login-json",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"aaaUser\": {\r\n    \"attributes\": {\r\n      \"name\": \"{{username}}\",\r\n      \"pwd\": \"{{password}}\"\r\n    }\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/aaaLogin.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"aaaLogin.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login-xml",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "<aaaUser name={{username}} pwd={{password}}/>"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/mo/aaaLogin.xml",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								"aaaLogin.xml"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Basic Configuration",
+			"item": [
+				{
+					"name": "Create Tenant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fvTenant\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}\",\r\n      \"name\": \"{{tenant}}\",\r\n      \"rn\": \"tn-{{tenant}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/tn-{{tenant}}.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{tenant}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Tenant Method2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fvTenant\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}\",\r\n      \"name\": \"{{tenant}}\",\r\n      \"rn\": \"tn-{{tenant}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create VRF",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fvCtx\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}/ctx-{{vrf}}\",\r\n      \"name\": \"{{vrf}}\",\r\n      \"rn\": \"ctx-{{vrf}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/tn-{{tenant}}/ctx-{{vrf}}.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{tenant}}",
+								"ctx-{{vrf}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bridge Domain",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fvBD\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}/BD-{{bd1}}\",\r\n      \"name\": \"{{bd1}}\",\r\n      \"rn\": \"BD-{{bd1}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"fvRsCtx\": {\r\n          \"attributes\": {\r\n            \"tnFvCtxName\": \"{{vrf}}\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/tn-{{tenant}}/BD-{{bd1}}.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{tenant}}",
+								"BD-{{bd1}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bridge Domain Method2",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fvBD\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}/BD-{{bd1}}\",\r\n      \"name\": \"{{bd1}}\",\r\n      \"rn\": \"BD-{{bd1}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"fvRsCtx\": {\r\n          \"attributes\": {\r\n            \"tnFvCtxName\": \"{{vrf}}\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Application Profile",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fvAp\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}/ap-{{anp}}\",\r\n      \"name\": \"{{anp}}\",\r\n      \"rn\": \"ap-{{anp}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/tn-{{tenant}}/ap-{{anp}}.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"tn-{{tenant}}",
+								"ap-{{anp}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Node Annotation",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tagAnnotation\": {\r\n    \"attributes\": {\r\n      \"key\": \"Location\",\r\n      \"value\": \"SF1-A6\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/topology/pod-1/node-201.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"topology",
+								"pod-1",
+								"node-201.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create VPC 101-102",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fabricExplicitGEp\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/fabric/protpol/expgep-vPC-101-102\",\r\n      \"name\": \"vPC-101-102\",\r\n      \"id\": \"10\",\r\n      \"rn\": \"expgep-vPC-101-102\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"fabricNodePEp\": {\r\n          \"attributes\": {\r\n            \"dn\": \"uni/fabric/protpol/expgep-vPC-101-102/nodepep-101\",\r\n            \"id\": \"101\",\r\n            \"status\": \"created\",\r\n            \"rn\": \"nodepep-101\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      },\r\n      {\r\n        \"fabricNodePEp\": {\r\n          \"attributes\": {\r\n            \"dn\": \"uni/fabric/protpol/expgep-vPC-101-102/nodepep-102\",\r\n            \"id\": \"102\",\r\n            \"status\": \"created\",\r\n            \"rn\": \"nodepep-102\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      },\r\n      {\r\n        \"fabricRsVpcInstPol\": {\r\n          \"attributes\": {\r\n            \"tnVpcInstPolName\": \"default\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/fabric/protpol/expgep-vPC-101-102.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"fabric",
+								"protpol",
+								"expgep-vPC-101-102.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Defining Interface Policies",
+			"item": [
+				{
+					"name": "Create CDP Policy - Enable",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cdpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/cdpIfP-CDP_OFF\",\n      \"name\": \"CDP_OFF\",\n      \"adminSt\": \"disabled\",\n      \"rn\": \"cdpIfP-CDP_OFF\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create CDP Policy - Disable",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cdpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/cdpIfP-CDP_ON\",\n      \"name\": \"CDP_ON\",\n      \"rn\": \"cdpIfP-CDP_ON\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create STP Policy - Enable",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"stpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/ifPol-STP-ENABLE\",\n      \"name\": \"STP-ENABLE\",\n      \"ctrl\": \"bpdu-filter,bpdu-guard\",      \n      \"rn\": \"ifPol-STP-ENABLE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create STP Policy - Disable",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"stpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/ifPol-STP-DISABLE\",\n      \"name\": \"STP-DISABLE\",\n      \"rn\": \"ifPol-STP-DISABLE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create LLDP Policy - Disable",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lldpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/lldpIfP-LLDP_Off\",\n      \"name\": \"LLDP_Off\",\n      \"adminRxSt\": \"disabled\",\n      \"adminTxSt\": \"disabled\",\n      \"rn\": \"lldpIfP-LLDP_Off\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create LLDP Policy - Enable",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lldpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/lldpIfP-LLDP_ON\",\n      \"name\": \"LLDP_ON\",\n      \"rn\": \"lldpIfP-LDPP_ON\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create MCP Policy - Enable",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mcpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/mcpIfP-MCP-ENABLE\",\n      \"name\": \"MCP-ENABLE\",\n      \"rn\": \"mcpIfP-MCP-ENABLE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create MCP Policy - Disable",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mcpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/mcpIfP-MCP-DISABLE\",\n      \"name\": \"MCP-DISABLE\",\n      \"adminSt\":\"disabled\",\n      \"rn\": \"mcpIfP-MCP-DISABLE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create LACP Policy - LACP Active",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lacpLagPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/lacplagp-LACPACTIVE\",\n      \"ctrl\": \"fast-sel-hot-stdby,graceful-conv,susp-individual\",\n      \"name\": \"LACPACTIVE\",\n      \"mode\": \"active\",\n      \"rn\": \"lacplagp-LACPACTIVE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create LACP Policy - LACP Passive",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lacpLagPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/lacplagp-LACPPASSIVE\",\n      \"ctrl\": \"fast-sel-hot-stdby,graceful-conv,susp-individual\",\n      \"name\": \"LACPPASSIVE\",\n      \"mode\": \"active\",\n      \"rn\": \"lacplagp-LACPPASSIVE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create LACP Policy - LACP Passive Method2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lacpLagPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/lacplagp-LACPPASSIVE\",\n      \"ctrl\": \"fast-sel-hot-stdby,graceful-conv,susp-individual\",\n      \"name\": \"LACPPASSIVE\",\n      \"mode\": \"active\",\n      \"rn\": \"lacplagp-LACPPASSIVE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/infra/lacplagp-LACPPASSIVE.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"lacplagp-LACPPASSIVE.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Troubleshooting",
+			"item": [
+				{
+					"name": "Get Unreachable Nodes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/class/fabricLooseNode.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"class",
+								"fabricLooseNode.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Unmanaged Nodes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/class/fabricLooseNode.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"class",
+								"fabricLooseNode.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cluster Health",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/topology/pod-1/node-1/av.json?query-target=children&target-subtree-class=infraWiNode",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"topology",
+								"pod-1",
+								"node-1",
+								"av.json"
+							],
+							"query": [
+								{
+									"key": "query-target",
+									"value": "children"
+								},
+								{
+									"key": "target-subtree-class",
+									"value": "infraWiNode"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get APIC Version",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/class/fabricNode.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"class",
+								"fabricNode.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Fabric Membership",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/class/topSystem.json?query-target=subtree&target-subtree-class=firmwareCtrlrRunning",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"class",
+								"topSystem.json"
+							],
+							"query": [
+								{
+									"key": "query-target",
+									"value": "subtree"
+								},
+								{
+									"key": "target-subtree-class",
+									"value": "firmwareCtrlrRunning"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Overall Fabric Health",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/topology/HDfabricOverallHealth5min-0.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"topology",
+								"HDfabricOverallHealth5min-0.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Fault Summary",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/class/faultSummary.json?order-by=faultSummary.severity|desc&page=0&page-size=15",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"class",
+								"faultSummary.json"
+							],
+							"query": [
+								{
+									"key": "order-by",
+									"value": "faultSummary.severity|desc"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "page-size",
+									"value": "15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Query Specific Node",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"tagAnnotation\":{\"attributes\":{\"key\":\"Location\",\"value\":\"SF1-A6\"},\"children\":[]}}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/topology/pod-1/node-201.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"topology",
+								"pod-1",
+								"node-201.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tenant Fault Counts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/mo/uni/tn-{{tenant}}/fltCnts.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								"uni",
+								"tn-{{tenant}}",
+								"fltCnts.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tenant Health",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/mo/uni/tn-{{tenant}}/health.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"mo",
+								"uni",
+								"tn-{{tenant}}",
+								"health.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Proc on APIC",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/class/topology/pod-1/node-101/procEntry.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"class",
+								"topology",
+								"pod-1",
+								"node-101",
+								"procEntry.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
