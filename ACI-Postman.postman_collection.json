@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8b4547fb-ab10-4356-9bf1-d273410dd2c8",
+		"_postman_id": "0c094168-6638-47f7-9613-3adae34cb222",
 		"name": "ACI-Postman",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -10,6 +10,22 @@
 			"item": [
 				{
 					"name": "Login-json",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody)\r",
+									"pm.environment.set(\"token\", jsonData.imdata[0].aaaLogin.attributes.token);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -30,64 +46,27 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Login-xml",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "<aaaUser name={{username}} pwd={{password}}/>"
-						},
-						"url": {
-							"raw": "https://{{hostname}}/api/mo/aaaLogin.xml",
-							"protocol": "https",
-							"host": [
-								"{{hostname}}"
-							],
-							"path": [
-								"api",
-								"mo",
-								"aaaLogin.xml"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
 		{
-			"name": "2. Basic Configuration",
+			"name": "2. Tenant Related Config",
 			"item": [
 				{
 					"name": "Create Tenant",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"fvTenant\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}\",\r\n      \"name\": \"{{tenant}}\",\r\n      \"rn\": \"tn-{{tenant}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
-						},
-						"url": {
-							"raw": "https://{{hostname}}/api/node/mo/uni/tn-{{tenant}}.json",
-							"protocol": "https",
-							"host": [
-								"{{hostname}}"
-							],
-							"path": [
-								"api",
-								"node",
-								"mo",
-								"uni",
-								"tn-{{tenant}}.json"
-							]
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Tenant Method2",
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -113,6 +92,19 @@
 				},
 				{
 					"name": "Create VRF",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -121,7 +113,7 @@
 							"raw": "{\r\n  \"fvCtx\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}/ctx-{{vrf}}\",\r\n      \"name\": \"{{vrf}}\",\r\n      \"rn\": \"ctx-{{vrf}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
 						},
 						"url": {
-							"raw": "https://{{hostname}}/api/node/mo/uni/tn-{{tenant}}/ctx-{{vrf}}.json",
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
 							"protocol": "https",
 							"host": [
 								"{{hostname}}"
@@ -130,9 +122,7 @@
 								"api",
 								"node",
 								"mo",
-								"uni",
-								"tn-{{tenant}}",
-								"ctx-{{vrf}}.json"
+								"uni.json"
 							]
 						}
 					},
@@ -140,39 +130,25 @@
 				},
 				{
 					"name": "Create Bridge Domain",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"fvBD\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}/BD-{{bd1}}\",\r\n      \"name\": \"{{bd1}}\",\r\n      \"rn\": \"BD-{{bd1}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"fvRsCtx\": {\r\n          \"attributes\": {\r\n            \"tnFvCtxName\": \"{{vrf}}\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
-						},
-						"url": {
-							"raw": "https://{{hostname}}/api/node/mo/uni/tn-{{tenant}}/BD-{{bd1}}.json",
-							"protocol": "https",
-							"host": [
-								"{{hostname}}"
-							],
-							"path": [
-								"api",
-								"node",
-								"mo",
-								"uni",
-								"tn-{{tenant}}",
-								"BD-{{bd1}}.json"
-							]
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create Bridge Domain Method2",
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"fvBD\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}/BD-{{bd1}}\",\r\n      \"name\": \"{{bd1}}\",\r\n      \"rn\": \"BD-{{bd1}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"fvRsCtx\": {\r\n          \"attributes\": {\r\n            \"tnFvCtxName\": \"{{vrf}}\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
+							"raw": "{\r\n  \"fvBD\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}/BD-{{bd}}\",\r\n      \"name\": \"{{bd}}\",\r\n      \"rn\": \"BD-{{bd}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"fvRsCtx\": {\r\n          \"attributes\": {\r\n            \"tnFvCtxName\": \"{{vrf}}\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
 						},
 						"url": {
 							"raw": "https://{{hostname}}/api/node/mo/uni.json",
@@ -192,6 +168,19 @@
 				},
 				{
 					"name": "Create Application Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -200,7 +189,7 @@
 							"raw": "{\r\n  \"fvAp\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}/ap-{{anp}}\",\r\n      \"name\": \"{{anp}}\",\r\n      \"rn\": \"ap-{{anp}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
 						},
 						"url": {
-							"raw": "https://{{hostname}}/api/node/mo/uni/tn-{{tenant}}/ap-{{anp}}.json",
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
 							"protocol": "https",
 							"host": [
 								"{{hostname}}"
@@ -209,25 +198,36 @@
 								"api",
 								"node",
 								"mo",
-								"uni",
-								"tn-{{tenant}}",
-								"ap-{{anp}}.json"
+								"uni.json"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Set Node Annotation",
+					"name": "Create Endpoint Group",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"tagAnnotation\": {\r\n    \"attributes\": {\r\n      \"key\": \"Location\",\r\n      \"value\": \"SF1-A6\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
+							"raw": "{\r\n  \"fvAEPg\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/tn-{{tenant}}/ap-{{anp}}/epg-{{epg}}\",\r\n      \"prio\": \"level3\",\r\n      \"name\": \"{{epg}}\",\r\n      \"rn\": \"epg-{{epg}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"fvRsBd\": {\r\n          \"attributes\": {\r\n            \"tnFvBDName\": \"{{bd}}\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
 						},
 						"url": {
-							"raw": "https://{{hostname}}/api/node/mo/topology/pod-1/node-201.json",
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
 							"protocol": "https",
 							"host": [
 								"{{hostname}}"
@@ -236,25 +236,41 @@
 								"api",
 								"node",
 								"mo",
-								"topology",
-								"pod-1",
-								"node-201.json"
+								"uni.json"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Create VPC 101-102",
+					"name": "Create EPG Static Bind - Port",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"fabricExplicitGEp\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/fabric/protpol/expgep-vPC-101-102\",\r\n      \"name\": \"vPC-101-102\",\r\n      \"id\": \"10\",\r\n      \"rn\": \"expgep-vPC-101-102\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"fabricNodePEp\": {\r\n          \"attributes\": {\r\n            \"dn\": \"uni/fabric/protpol/expgep-vPC-101-102/nodepep-101\",\r\n            \"id\": \"101\",\r\n            \"status\": \"created\",\r\n            \"rn\": \"nodepep-101\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      },\r\n      {\r\n        \"fabricNodePEp\": {\r\n          \"attributes\": {\r\n            \"dn\": \"uni/fabric/protpol/expgep-vPC-101-102/nodepep-102\",\r\n            \"id\": \"102\",\r\n            \"status\": \"created\",\r\n            \"rn\": \"nodepep-102\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      },\r\n      {\r\n        \"fabricRsVpcInstPol\": {\r\n          \"attributes\": {\r\n            \"tnVpcInstPolName\": \"default\",\r\n            \"status\": \"created,modified\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
+							"raw": "{\n  \"fvRsPathAtt\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{tenant}}/ap-{{anp}}/epg-{{epg}}/rspathAtt-[topology/pod-{{pod}}/paths-{{node}}/pathep-[eth-{{port}}]]\",\n      \"encap\": \"vlan-{{vlan}}\",\n      \"instrImedcy\": \"{{instrImedcy}}\",\n      \"mode\": \"{{mode}}\",\n      \"tDn\": \"topology/pod-{{pod}}/paths-{{node}}/pathep-[eth-{{port}}]\",\n      \"rn\": \"rspathAtt-[topology/pod-{{pod}}/paths-{{node}}/pathep-[eth-{{port}}]]\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
 						},
 						"url": {
-							"raw": "https://{{hostname}}/api/node/mo/uni/fabric/protpol/expgep-vPC-101-102.json",
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
 							"protocol": "https",
 							"host": [
 								"{{hostname}}"
@@ -263,10 +279,50 @@
 								"api",
 								"node",
 								"mo",
-								"uni",
-								"fabric",
-								"protpol",
-								"expgep-vPC-101-102.json"
+								"uni.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create EPG Static Bind - PC/VPC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"fvRsPathAtt\": {\n    \"attributes\": {\n      \"dn\": \"uni/tn-{{tenant}}/ap-{{anp}}/epg-{{epg}}/rspathAtt-[topology/pod-{{pod}}/paths-{{node}}/pathep-[{{ipg}}]]\",\n      \"encap\": \"vlan-{{vlan}}\",\n      \"instrImedcy\": \"{{instrImedcy}}\",\n      \"mode\": \"{{mode}}\",\n      \"tDn\": \"topology/pod-{{pod}}/paths-{{node}}/pathep-[{{ipg}}]\",\n      \"rn\": \"rspathAtt-[topology/pod-{{pod}}/paths-{{node}}/pathep-[{{ipg}}]]\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni.json"
 							]
 						}
 					},
@@ -279,6 +335,19 @@
 			"item": [
 				{
 					"name": "Create CDP Policy - Enable",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -289,7 +358,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"cdpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/cdpIfP-CDP_OFF\",\n      \"name\": \"CDP_OFF\",\n      \"adminSt\": \"disabled\",\n      \"rn\": \"cdpIfP-CDP_OFF\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+							"raw": "{\n  \"cdpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/cdpIfP-CDP-ENABLE\",\n      \"name\": \"CDP-ENABLE\",\n      \"adminSt\": \"enabled\",\n      \"rn\": \"cdpIfP-CDP-ENABLE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
 						},
 						"url": {
 							"raw": "https://{{hostname}}/api/node/mo/uni.json",
@@ -309,6 +378,19 @@
 				},
 				{
 					"name": "Create CDP Policy - Disable",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -319,7 +401,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"cdpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/cdpIfP-CDP_ON\",\n      \"name\": \"CDP_ON\",\n      \"rn\": \"cdpIfP-CDP_ON\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
+							"raw": "{\n  \"cdpIfPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/cdpIfP-CDP-DISABLE\",\n      \"name\": \"CDP-DISABLE\",\n      \"adminSt\": \"disabled\",\n      \"rn\": \"cdpIfP-CDP-DISABLE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
 						},
 						"url": {
 							"raw": "https://{{hostname}}/api/node/mo/uni.json",
@@ -339,6 +421,19 @@
 				},
 				{
 					"name": "Create STP Policy - Enable",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -369,6 +464,19 @@
 				},
 				{
 					"name": "Create STP Policy - Disable",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -399,6 +507,19 @@
 				},
 				{
 					"name": "Create LLDP Policy - Disable",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -429,6 +550,19 @@
 				},
 				{
 					"name": "Create LLDP Policy - Enable",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -459,6 +593,19 @@
 				},
 				{
 					"name": "Create MCP Policy - Enable",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -489,6 +636,19 @@
 				},
 				{
 					"name": "Create MCP Policy - Disable",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -518,7 +678,20 @@
 					"response": []
 				},
 				{
-					"name": "Create LACP Policy - LACP Active",
+					"name": "Create LACP Policy - Active",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -548,7 +721,20 @@
 					"response": []
 				},
 				{
-					"name": "Create LACP Policy - LACP Passive",
+					"name": "Create LACP Policy - Passive",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [
@@ -576,38 +762,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Create LACP Policy - LACP Passive Method2",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"lacpLagPol\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/lacplagp-LACPPASSIVE\",\n      \"ctrl\": \"fast-sel-hot-stdby,graceful-conv,susp-individual\",\n      \"name\": \"LACPPASSIVE\",\n      \"mode\": \"active\",\n      \"rn\": \"lacplagp-LACPPASSIVE\",\n      \"status\": \"created\"\n    },\n    \"children\": []\n  }\n}"
-						},
-						"url": {
-							"raw": "https://{{hostname}}/api/node/mo/uni/infra/lacplagp-LACPPASSIVE.json",
-							"protocol": "https",
-							"host": [
-								"{{hostname}}"
-							],
-							"path": [
-								"api",
-								"node",
-								"mo",
-								"uni",
-								"infra",
-								"lacplagp-LACPPASSIVE.json"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -616,6 +770,19 @@
 			"item": [
 				{
 					"name": "Get Unreachable Nodes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -642,6 +809,19 @@
 				},
 				{
 					"name": "Get Unmanaged Nodes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -667,72 +847,20 @@
 					"response": []
 				},
 				{
-					"name": "Get Cluster Health",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "text/xml"
-							}
-						],
-						"url": {
-							"raw": "https://{{hostname}}/api/node/mo/topology/pod-1/node-1/av.json?query-target=children&target-subtree-class=infraWiNode",
-							"protocol": "https",
-							"host": [
-								"{{hostname}}"
-							],
-							"path": [
-								"api",
-								"node",
-								"mo",
-								"topology",
-								"pod-1",
-								"node-1",
-								"av.json"
-							],
-							"query": [
-								{
-									"key": "query-target",
-									"value": "children"
-								},
-								{
-									"key": "target-subtree-class",
-									"value": "infraWiNode"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get APIC Version",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "text/xml"
-							}
-						],
-						"url": {
-							"raw": "https://{{hostname}}/api/node/class/fabricNode.json",
-							"protocol": "https",
-							"host": [
-								"{{hostname}}"
-							],
-							"path": [
-								"api",
-								"node",
-								"class",
-								"fabricNode.json"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Get Fabric Membership",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -769,6 +897,19 @@
 				},
 				{
 					"name": "Get Overall Fabric Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -796,6 +937,19 @@
 				},
 				{
 					"name": "Get Fault Summary",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -836,6 +990,19 @@
 				},
 				{
 					"name": "Get Query Specific Node",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -866,6 +1033,19 @@
 				},
 				{
 					"name": "Get Tenant Fault Counts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -893,6 +1073,19 @@
 				},
 				{
 					"name": "Get Tenant Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -920,6 +1113,19 @@
 				},
 				{
 					"name": "Get Proc on APIC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [
@@ -942,6 +1148,708 @@
 								"pod-1",
 								"node-101",
 								"procEntry.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Node Annotation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tagAnnotation\": {\r\n    \"attributes\": {\r\n      \"key\": \"Location\",\r\n      \"value\": \"SF1-A6\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/topology/pod-1/node-201.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"topology",
+								"pod-1",
+								"node-201.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/class/fabricNode.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"class",
+								"fabricNode.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Interface Profiles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/class/infraAccPortP.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"class",
+								"infraAccPortP.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Interface Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/class/l1PhysIf.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"class",
+								"l1PhysIf.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Cluster Health - APIC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							}
+						],
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/topology/pod-1/node-1/av.json?query-target=children&target-subtree-class=infraWiNode",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"topology",
+								"pod-1",
+								"node-1",
+								"av.json"
+							],
+							"query": [
+								{
+									"key": "query-target",
+									"value": "children"
+								},
+								{
+									"key": "target-subtree-class",
+									"value": "infraWiNode"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get CPU & Memory - APIC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{hostname}}/api/class/procEntity.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"class",
+								"procEntity.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Disk Utilization - APIC",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{hostname}}/api/class/eqptStorage.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"class",
+								"eqptStorage.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get CPU - SpineLeaf",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{hostname}}/api/class/procSysCPU5min.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"class",
+								"procSysCPU5min.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "t",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{hostname}}/api/class/eqptStorage.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"class",
+								"eqptStorage.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "5. Fabric Policies Config",
+			"item": [
+				{
+					"name": "Set Node Annotation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"tagAnnotation\": {\r\n    \"attributes\": {\r\n      \"key\": \"Location\",\r\n      \"value\": \"SF1-A6\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/topology/pod-1/node-201.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"topology",
+								"pod-1",
+								"node-201.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "6. Access Policies Config",
+			"item": [
+				{
+					"name": "Create Switch Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"infraNodeP\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/infra/nprof-{{sw_prof_name}}\",\r\n      \"name\": \"{{sw_prof_name}}\",\r\n      \"descr\": \"{{sw_prof_descr}}\",\r\n      \"status\": \"created,modified\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/infra/nprof-{{sw_prof_name}}.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"nprof-{{sw_prof_name}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bind Switch Selector to Switch Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"infraLeafS\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/infra/nprof-{{sw_prof_name}}/leaves-{{sw_sel_name}}-typ-range\",\r\n      \"type\": \"range\",\r\n      \"name\": \"{{sw_sel_name}}\",\r\n      \"status\": \"created\"\r\n    },\r\n    \"children\": [\r\n      {\r\n        \"infraNodeBlk\": {\r\n          \"attributes\": {\r\n            \"from_\": \"{{NodeBlkfrom}}\",\r\n            \"to_\": \"{{NodeBlkto}}\",\r\n            \"name\": \"{{sw_sel_name}}\",\r\n            \"status\": \"created\"\r\n          },\r\n          \"children\": []\r\n        }\r\n      }\r\n    ]\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/infra/nprof-{{sw_prof_name}}/leaves-{{sw_sel_name}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"nprof-{{sw_prof_name}}",
+								"leaves-{{sw_sel_name}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Interface Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"infraAccPortP\": {\r\n    \"attributes\": {\r\n      \"dn\": \"uni/infra/accportprof-{{int_prof_name}}\",\r\n      \"name\": \"{{int_prof_name}}\",\r\n      \"descr\": \"{{int_prof_descr}}\",\r\n      \"status\": \"created,modified\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/infra/accportprof-{{int_prof_name}}.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-{{int_prof_name}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bind interface profile to switch profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"infraRsAccPortP\": {\r\n    \"attributes\": {\r\n      \"tDn\": \"uni/infra/accportprof-{{int_prof_name}}\",\r\n      \"status\": \"created,modified\"\r\n    },\r\n    \"children\": []\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/infra/nprof-{{sw_prof_name}}.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"nprof-{{sw_prof_name}}.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Interface Profile Selector",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-{{int_prof_name}}/hports-{{int_sel_name}}-typ-range\",\n      \"name\": \"{{int_sel_name}}\",\n      \"descr\": \"{{int_sel_descr}}\",\n      \"rn\": \"hports-{{int_sel_name}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-{{int_prof_name}}/hports-{{int_sel_name}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{PortBlkfrom}}\",\n            \"toPort\": \"{{PortBlkto}}\",\n            \"name\": \"block2\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/infra/accportprof-{{int_prof_name}}/hports-{{int_sel_name}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-{{int_prof_name}}",
+								"hports-{{int_sel_name}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Configure Interface Profile Selector",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"infraHPortS\": {\n    \"attributes\": {\n      \"dn\": \"uni/infra/accportprof-{{int_prof_name}}/hports-{{int_sel_name}}-typ-range\",\n      \"name\": \"{{int_sel_name}}\",\n      \"descr\": \"{{int_sel_descr}}\",\n      \"rn\": \"hports-{{int_sel_name}}-typ-range\",\n      \"status\": \"created,modified\"\n    },\n    \"children\": [\n      {\n        \"infraPortBlk\": {\n          \"attributes\": {\n            \"dn\": \"uni/infra/accportprof-{{int_prof_name}}/hports-{{int_sel_name}}-typ-range/portblk-block2\",\n            \"fromPort\": \"{{PortBlkfrom}}\",\n            \"toPort\": \"{{PortBlkto}}\",\n            \"name\": \"block2\",\n            \"descr\": \"{{PortBlkdescr}}\",\n            \"rn\": \"portblk-block2\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      },\n      {\n        \"infraRsAccBaseGrp\": {\n          \"attributes\": {\n            \"tDn\": \"uni/infra/funcprof/accportgrp-{{IPG}}\",\n            \"status\": \"created,modified\"\n          },\n          \"children\": []\n        }\n      }\n    ]\n  }\n}"
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/infra/accportprof-{{int_prof_name}}/hports-{{int_sel_name}}-typ-range.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"infra",
+								"accportprof-{{int_prof_name}}",
+								"hports-{{int_sel_name}}-typ-range.json"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "7. InterfaceShut",
+			"item": [
+				{
+					"name": "intshut",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fabricRsOosPath\": {\r\n        \"attributes\": {\r\n            \"tDn\": \"topology/pod-1/paths-{{node}}/pathep-[eth{{port}}]\",\r\n            \"lc\": \"blacklist\"\r\n        },\r\n        \"children\": []\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{hostname}}/api/node/mo/uni/fabric/outofsvc.json",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"api",
+								"node",
+								"mo",
+								"uni",
+								"fabric",
+								"outofsvc.json"
 							]
 						}
 					},
